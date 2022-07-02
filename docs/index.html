@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="generator" content="Crystal Docs 1.4.0">
-<meta name="crystal_docs.project_version" content="0.1.0">
+<meta name="crystal_docs.project_version" content="master-dev">
 <meta name="crystal_docs.project_name" content="ngram">
 
 
@@ -13,7 +13,7 @@
 <script type="text/javascript" src="js/doc.js"></script>
 
   <meta name="repository-name" content="ngram">
-  <title>ngram 0.1.0</title>
+  <title>ngram master-dev</title>
   <script type="text/javascript">
   CrystalDocs.base_path = "";
   </script>
@@ -39,7 +39,7 @@
       </h1>
 
       <span class="project-version">
-        0.1.0
+        master-dev
       </span>
     </div>
   </div>
@@ -56,8 +56,8 @@
       
     </li>
   
-  <li class=" " data-id="ngram/Ngram" data-name="ngram(t, n)">
-      <a href="Ngram.html">Ngram</a>
+  <li class=" " data-id="ngram/NGrams" data-name="ngrams(t, n)">
+      <a href="NGrams.html">NGrams</a>
       
     </li>
   
@@ -73,7 +73,7 @@
   </svg>
 </a>ngram</h1>
 <p>A Crystal Shard for iterating over arbitrarily-sized and typed N-grams. Given
-any <code>Iterator(T)</code>, <code><a href="Ngram.html">Ngram</a>(T, N)</code> will yield <code>StaticArray(T, N)</code> until the
+any <code>Iterator(T)</code>, <code>Ngram(T, N)</code> will yield <code>StaticArray(T, N)</code> until the
 Iterator is exhausted. The first element and any final element(s) of the
 yielded n-grams are <code>bumper_item T</code>, which must be defined for any <code>T</code>. The
 shard comes with definitions for <code>Char</code>, <code>String</code>, and any union with <code>Nil</code>.</p>
@@ -94,7 +94,7 @@ crate, which was in turn loosely inspired by the
 <p>Add the dependency to your <code>shard.yml</code>:</p>
 <pre><code class="language-yaml">dependencies:
   ngram:
-    github: dscottboggs/ngram</code></pre>
+    github: dscottboggs/ngram.cr</code></pre>
 </li>
 <li>
 <p>Run <code>shards install</code></p>
@@ -117,9 +117,15 @@ ten_grams.<span class="k">next</span> <span class="c"># =&gt; StaticArray[&#39;\
 
 corpus <span class="o">=</span> ([<span class="n">1</span>, <span class="n">2</span>] <span class="k">of</span> <span class="t">Int32</span>?).each
 bigrams <span class="o">=</span> <span class="t">Ngram</span>(<span class="t">Int32</span>?, <span class="n">2</span>).<span class="k">new</span> corpus
-bigrams.<span class="k">next</span> <span class="c"># =&gt; StaticArray[nil, 1]</span></code></pre>
+bigrams.<span class="k">next</span> <span class="c"># =&gt; StaticArray[nil, 1]</span>
+
+<span class="c"># N must be 2 or more.</span>
+<span class="t">NGrams</span>(<span class="t">Char</span>, <span class="n">1</span>).<span class="k">new</span> [<span class="s">&#39;1&#39;</span>] <span class="c"># This will fail to compile</span></code></pre>
 <p>See <a href="/spec/ngram_spec.cr">the tests</a> for more details on the behavior.</p>
-<p>Arbitrary types can be used, but must implement <code>.bumper_char</code> at the class level. Crystal doesn't really offer a way to document this in the code, but compilation will fail if the method isn't present.</p>
+<p>Arbitrary types can be used, but an overload for e.g. type <code>T</code>,
+<code><a href="toplevel.html#bumper_item%28_type%3A%3A%3AChar.class%29-class-method">bumper_item(T.class)</a></code> must be implemented in the top-level namespace. Crystal
+doesn't really offer a way to document this in the code, but compilation will
+fail if the function overload isn't present.</p>
 <pre><code class="language-crystal">record <span class="t">MyType</span>, data : <span class="t">Int32</span>, valid : <span class="t">Bool</span> <span class="k">do</span>
   <span class="k">def</span> <span class="m">self</span>.invalid
     <span class="k">new</span> <span class="n">0</span>, <span class="n">false</span>

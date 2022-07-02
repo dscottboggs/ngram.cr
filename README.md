@@ -20,7 +20,7 @@ crate, which was in turn loosely inspired by the
    ```yaml
    dependencies:
      ngram:
-       github: dscottboggs/ngram
+       github: dscottboggs/ngram.cr
    ```
 
 2. Run `shards install`
@@ -41,10 +41,16 @@ ten_grams.next # => StaticArray['\u2060', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'
 corpus = ([1, 2] of Int32?).each
 bigrams = Ngram(Int32?, 2).new corpus
 bigrams.next # => StaticArray[nil, 1]
+
+# N must be 2 or more.
+NGrams(Char, 1).new ['1'] # This will fail to compile
 ```
 See [the tests](/spec/ngram_spec.cr) for more details on the behavior.
 
-Arbitrary types can be used, but must implement `.bumper_char` at the class level. Crystal doesn't really offer a way to document this in the code, but compilation will fail if the method isn't present.
+Arbitrary types can be used, but an overload for e.g. type `T`,
+`bumper_item(T.class)` must be implemented in the top-level namespace. Crystal
+doesn't really offer a way to document this in the code, but compilation will
+fail if the function overload isn't present.
 
 ```crystal
 record MyType, data : Int32, valid : Bool do
